@@ -1,0 +1,22 @@
+{
+    "name": "parsecontent",
+    "version": "1.0.0",
+    "description": "Parses content",
+    "main": "parsecontent",
+    "private": true,
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ssoper/parsecontent"
+    },
+    "author": "sean.soper@gmail.com",
+    "engines" : {
+        "node" : ">=0.10.3 <0.12"
+    },
+    "homepage": "https://github.com/ssoper/parsecontent",
+    "dependencies": {
+        "glob": "~5.0.5",
+        "async": "~0.9.0",
+        "chrono-node": "~1.0.2",
+        "lodash": "~2.4.1"
+    }
+}

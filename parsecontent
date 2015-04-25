@@ -1,0 +1,3 @@
+#!/usr/bin/env node
+
+// grab list of files that match pattern dd-d{1,2}-dddd( second)?.md
