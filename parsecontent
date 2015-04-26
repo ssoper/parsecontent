@@ -1,3 +1,11 @@
 #!/usr/bin/env node
 
-// grab list of files that match pattern dd-d{1,2}-dddd( second)?.md
+// grab list of markdown files that match pattern dd-d{1,2}-dddd( second)?.md
+// create data struct date -> [entry]
+
+var glob = require("glob")
+
+// options is optional
+glob("**/*.md", function (er, files) {
+    console.log(files)
+});
