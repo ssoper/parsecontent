@@ -8,4 +8,5 @@ var glob = require("glob")
 // options is optional
 glob("**/*.md", function (er, files) {
     console.log(files)
+    console.log(files.length)
 });
