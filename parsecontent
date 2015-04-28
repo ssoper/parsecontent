@@ -38,7 +38,12 @@ glob("**/*.md", function (err, files) {
     console.log('Processing ' + files.length + ' files');
 
     _.each(files, function(file) {
-        entries.push(new Entry(file));
+        var entry = new Entry(file);
+        if (!entry || !entry.date) {
+            return;
+        }
+
+        entries.push(entry);
     });
 
     entries.sort(function(a, b) {
