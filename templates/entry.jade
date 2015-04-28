@@ -1,0 +1,28 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset='utf-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1' user-scalable='no')
+        title= title
+        style(type='text/css') !{styles}
+    body
+        .container
+            .row.date.content
+                .twelve.columns= date
+            .row.content
+                .twelve.columns !{content}
+            .row.navigation
+                .six.columns
+                    if previous
+                        a.button(href='#{previous}') Previous
+                    else
+                        &nbsp;
+                .six.columns.next
+                    if next
+                        a.button(href='#{next}') Next
+                    else
+                        &nbsp;
+            .row.content
+                .twelve.columns
+                    &nbsp;
+

@@ -1,13 +1,17 @@
 #!/usr/bin/env node
 
 // grab list of markdown files that match pattern dd-d{1,2}-dddd( second)?.md
-// create data struct date -> [entry]
+// create data struct date -> entry
 // create jade template that includes skeleton css
 // compile each entry against template
 
 var _ = require('lodash'),
+    fs = require('fs'),
+    path = require('path'),
     glob = require('glob'),
-    moment = require('moment');
+    moment = require('moment'),
+    jade = require('jade'),
+    marked = require('marked');
 
 function Entry(path) {
     this.path = path;
@@ -15,11 +19,19 @@ function Entry(path) {
     this.second = !!(/second\.md$/.exec(this.filename));
     var match = /^\d{1,2}-\d{1,2}-\d{4}/.exec(this.filename);
     if (match) {
-        this.date = moment(match[0]);
+        this.date = moment(new Date(match[0]));
     }
 }
 
 var entries = [];
+var fn = jade.compileFile(path.resolve(__dirname, 'templates/entry.jade'));
+var htmlDir = 'html';
+fs.mkdir(htmlDir)
+
+var styles = fs.readFileSync(path.resolve(__dirname, 'css/normalize.css'), { encoding: 'utf8' });
+styles = styles + fs.readFileSync(path.resolve(__dirname, 'css/skeleton.css'), { encoding: 'utf8' });
+styles = styles + fs.readFileSync(path.resolve(__dirname, 'css/styles.css'), { encoding: 'utf8' });
+
 glob("**/*.md", function (err, files) {
     console.log(files)
     console.log(files.length)
@@ -27,8 +39,6 @@ glob("**/*.md", function (err, files) {
     _.each(files, function(file) {
         entries.push(new Entry(file));
     });
-
-    console.log(entries)
 
     entries.sort(function(a, b) {
         if (a.date.valueOf() < b.date.valueOf()) {
@@ -46,5 +56,30 @@ glob("**/*.md", function (err, files) {
         return -1;
     });
 
+    console.log('***')
     console.log(entries)
+    _.each(entries, function(entry, idx) {
+        var raw = fs.readFileSync(entry.path, { encoding: 'utf8' });
+        if (!raw || raw.length === 0)
+            return;
+
+        var content = marked(raw);
+        var title = entry.date.format('MMMM Do YYYY');
+        var date = title;
+        var options = { content: content, title: title, date: date, styles: styles };
+        if (idx > 0) {
+            var previous = entries[idx-1].filename.replace(/md$/, 'html');
+            console.log(previous)
+            options.previous = previous;
+        }
+
+        if (idx < entries.length-1) {
+            var next = entries[idx+1].filename.replace(/md$/, 'html');
+            options.next = next;
+        }
+
+        var html = fn(options);
+        var path = htmlDir + '/' + entry.filename.replace(/md$/, 'html');
+        fs.writeFileSync(path, html, { encoding: 'utf8' });
+    });
 });
