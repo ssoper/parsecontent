@@ -70,7 +70,7 @@ glob("**/*.md", function (err, files) {
             return;
 
         var content = marked(raw);
-        var title = entry.date.format('MMMM Do YYYY');
+        var title = entry.date.format('MMMM Do, YYYY');
         var date = title;
         var options = { content: content, title: title, date: date, styles: styles };
         if (idx > 0) {
