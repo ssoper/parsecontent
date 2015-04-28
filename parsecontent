@@ -2,11 +2,49 @@
 
 // grab list of markdown files that match pattern dd-d{1,2}-dddd( second)?.md
 // create data struct date -> [entry]
+// create jade template that includes skeleton css
+// compile each entry against template
 
-var glob = require("glob")
+var _ = require('lodash'),
+    glob = require('glob'),
+    moment = require('moment');
 
-// options is optional
-glob("**/*.md", function (er, files) {
+function Entry(path) {
+    this.path = path;
+    this.filename = _.last(this.path.split('/'));
+    this.second = !!(/second\.md$/.exec(this.filename));
+    var match = /^\d{1,2}-\d{1,2}-\d{4}/.exec(this.filename);
+    if (match) {
+        this.date = moment(match[0]);
+    }
+}
+
+var entries = [];
+glob("**/*.md", function (err, files) {
     console.log(files)
     console.log(files.length)
+
+    _.each(files, function(file) {
+        entries.push(new Entry(file));
+    });
+
+    console.log(entries)
+
+    entries.sort(function(a, b) {
+        if (a.date.valueOf() < b.date.valueOf()) {
+            return -1;
+        }
+
+        if (b.date.valueOf() < a.date.valueOf()) {
+            return 1;
+        }
+
+        if (a.second) {
+            return 1;
+        }
+
+        return -1;
+    });
+
+    console.log(entries)
 });
