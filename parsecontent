@@ -26,15 +26,16 @@ function Entry(path) {
 var entries = [];
 var fn = jade.compileFile(path.resolve(__dirname, 'templates/entry.jade'));
 var htmlDir = 'html';
-fs.mkdir(htmlDir)
+if (!fs.existsSync(htmlDir)) {
+    fs.mkdir(htmlDir)
+}
 
 var styles = fs.readFileSync(path.resolve(__dirname, 'css/normalize.css'), { encoding: 'utf8' });
 styles = styles + fs.readFileSync(path.resolve(__dirname, 'css/skeleton.css'), { encoding: 'utf8' });
 styles = styles + fs.readFileSync(path.resolve(__dirname, 'css/styles.css'), { encoding: 'utf8' });
 
 glob("**/*.md", function (err, files) {
-    console.log(files)
-    console.log(files.length)
+    console.log('Processing ' + files.length + ' files');
 
     _.each(files, function(file) {
         entries.push(new Entry(file));
@@ -56,8 +57,8 @@ glob("**/*.md", function (err, files) {
         return -1;
     });
 
-    console.log('***')
-    console.log(entries)
+    // console.log('***')
+    // console.log(entries)
     _.each(entries, function(entry, idx) {
         var raw = fs.readFileSync(entry.path, { encoding: 'utf8' });
         if (!raw || raw.length === 0)
@@ -69,7 +70,7 @@ glob("**/*.md", function (err, files) {
         var options = { content: content, title: title, date: date, styles: styles };
         if (idx > 0) {
             var previous = entries[idx-1].filename.replace(/md$/, 'html');
-            console.log(previous)
+            // console.log(previous)
             options.previous = previous;
         }
 
