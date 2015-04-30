@@ -4,6 +4,8 @@
 // create data struct date -> entry
 // create jade template that includes skeleton css
 // compile each entry against template
+// create index linking
+// figure out spring break folder
 
 var _ = require('lodash'),
     fs = require('fs'),
