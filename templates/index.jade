@@ -1,0 +1,21 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset='utf-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1' user-scalable='no')
+        title Entries
+        style(type='text/css') !{styles}
+        script !{jquery}
+        script.
+            var content = !{JSON.stringify(content)};
+        script.
+            $(document).ready(function() {
+                $('#entry-12').click(function() {
+                    $('.content:first').replaceWith(content[0].html);
+                });        
+            });
+    body
+        .container
+            .content
+                h1#letters Letters 
+                !{readme}

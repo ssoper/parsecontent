@@ -13,7 +13,10 @@ var _ = require('lodash'),
     glob = require('glob'),
     moment = require('moment'),
     jade = require('jade'),
-    marked = require('marked');
+    marked = require('marked'),
+    CleanCSS = require('clean-css');
+
+var cleancss = new CleanCSS();
 
 function Entry(path) {
     this.path = path;
@@ -26,7 +29,8 @@ function Entry(path) {
 }
 
 var entries = [];
-var fn = jade.compileFile(path.resolve(__dirname, 'templates/entry.jade'));
+var indexTemplate = jade.compileFile(path.resolve(__dirname, 'templates/index.jade'));
+var entryTemplate = jade.compileFile(path.resolve(__dirname, 'templates/entry.jade'));
 var htmlDir = 'html';
 if (!fs.existsSync(htmlDir)) {
     fs.mkdir(htmlDir)
@@ -35,6 +39,8 @@ if (!fs.existsSync(htmlDir)) {
 var styles = fs.readFileSync(path.resolve(__dirname, 'css/normalize.css'), { encoding: 'utf8' });
 styles = styles + fs.readFileSync(path.resolve(__dirname, 'css/skeleton.css'), { encoding: 'utf8' });
 styles = styles + fs.readFileSync(path.resolve(__dirname, 'css/styles.css'), { encoding: 'utf8' });
+
+var jquery = fs.readFileSync(path.resolve(__dirname, 'js/jquery-2.1.4.min.js'), { encoding: 'utf8' });
 
 glob("**/*.md", function (err, files) {
     console.log('Processing ' + files.length + ' files');
@@ -64,8 +70,7 @@ glob("**/*.md", function (err, files) {
         return -1;
     });
 
-    // console.log('***')
-    // console.log(entries)
+    var json = [];
     _.each(entries, function(entry, idx) {
         var raw = fs.readFileSync(entry.path, { encoding: 'utf8' });
         if (!raw || raw.length === 0)
@@ -74,6 +79,12 @@ glob("**/*.md", function (err, files) {
         var content = marked(raw);
         var title = entry.date.format('MMMM Do, YYYY');
         var date = title;
+        var options = { content: content, date: date };
+        var html = entryTemplate(options);
+        json.push({ html: html, date: date });
+
+        return;
+
         var options = { content: content, title: title, date: date, styles: styles };
         if (idx > 0) {
             var previous = entries[idx-1].filename.replace(/md$/, 'html');
@@ -90,4 +101,10 @@ glob("**/*.md", function (err, files) {
         var path = htmlDir + '/' + entry.filename.replace(/md$/, 'html');
         fs.writeFileSync(path, html, { encoding: 'utf8' });
     });
+
+    var raw = fs.readFileSync('README.md', { encoding: 'utf8' });
+    var readme = marked(raw);
+    var options = { readme: readme, content: json, styles: cleancss.minify(styles).styles, jquery: jquery };
+    var html = indexTemplate(options);
+    fs.writeFileSync('index.html', html, { encoding: 'utf8' });
 });
