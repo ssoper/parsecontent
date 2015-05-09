@@ -7,34 +7,64 @@
     line-height: 1.5;
 }
 
-h1#letters {
+.content ol li {
+    line-height: 1.5;
+}
+
+.content h1#letters {
+    font-size: 64px;
     margin-top: 12px;
     text-align: center;
 }
 
-h5 {
+.content h5 {
+    font-family: Georgia,Cambria,"Times New Roman",Times,serif;
     font-style: italic;
     font-size: 24px;
+    line-height: 1.5;
     margin-top: 12px;
+    margin-left: 5px;
 }
 
-.date {
+.content .date {
     font-size: 36px;
     text-align: center;
     border-bottom: rgba(1,1,1,0.5) solid thin;
     margin-bottom: 30px;
     padding-top: 10px;
     padding-bottom: 20px;
-}
-
-.next {
-    text-align: right;
+    margin-top: 75px;
 }
 
 .navigation {
-    padding-top: 30px;    
+    display: none;
+    position: fixed;
+    width: 100%;
+    z-index: 99;
+    top: 0px;
+    left: 0px;
+    padding-top: 30px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#previous, #next {
+    margin-top: -15px;
+    padding-bottom: 15px;
+}
+
+#previous {
+    padding-left: 5px;
+}
+
+#next {
+    padding-right: 5px;
 }
 
 .container > .row:last-child {
     height: 100px;
+}
+
+/* Calendar overrides */
+.calendar-cell > * {
+    font-size: 24px;
 }

@@ -3,19 +3,25 @@ html(lang="en")
     head
         meta(charset='utf-8')
         meta(name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1' user-scalable='no')
-        title Entries
+        title Letters
         style(type='text/css') !{styles}
         script !{jquery}
+        script !{metro}
         script.
-            var content = !{JSON.stringify(content)};
-        script.
-            $(document).ready(function() {
-                $('#entry-12').click(function() {
-                    $('.content:first').replaceWith(content[0].html);
-                });        
-            });
+            window.content = !{JSON.stringify(content)};
+            window.dateIndex = !{JSON.stringify(dateIndex)};
     body
         .container
-            .content
+            nav.navigation
+                .container
+                    #previous.u-pull-left
+                        a.button(href='#') Previous
+                    #next.u-pull-right
+                        a.button(href='#') Next
+            .row.content
                 h1#letters Letters 
                 !{readme}
+                .cell
+                    h5 Select a date
+                    div(data-role='calendar' data-buttons='false' data-date='#{startDate}' data-min-date='#{startDate}' data-include='#{includeDates}')
+            .row
