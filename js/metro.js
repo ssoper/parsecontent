@@ -2092,6 +2092,16 @@ window.METRO_LOCALES = {
                     that._year += 1;
                     that._renderCalendar();
                 });
+
+                table.find('.entry').click(function(evt) {
+                    evt.preventDefault();
+                    evt.stopPropagation();
+
+                    var dateStr = evt.target.id.split('entry-')[1];
+                    // alert(dateStr)
+                    window.showEntry(dateStr);
+                })
+
                 /*
                 table.find('.day a').on('click', function(e){
                     e.preventDefault();
