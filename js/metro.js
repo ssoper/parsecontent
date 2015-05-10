@@ -2098,8 +2098,7 @@ window.METRO_LOCALES = {
                     evt.stopPropagation();
 
                     var dateStr = evt.target.id.split('entry-')[1];
-                    // alert(dateStr)
-                    window.showEntry(dateStr);
+                    window.showEntryByDate(dateStr);
                 })
 
                 /*

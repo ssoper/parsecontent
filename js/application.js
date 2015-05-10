@@ -1,21 +1,18 @@
-window.showEntry = function(dateStr) {
-    if (!window.dateIndex[dateStr]) {
-        return;
-    }
-
-    var entries = window.dateIndex[dateStr];
-    var idx = entries[0];
+var showEntryByIdx = function(idx) {
     var content = window.content[idx];
-    $('.content:first').replaceWith(content.html);
+    $('.content:first').html(content.html);
     $('.navigation').css({ display: 'block' });
 
     if (idx > 0) {
         $('#previous').show();
-        $('#previous').click(function(evt) {
+        $('#previous').bind('click', function(evt) {
             evt.preventDefault();
             evt.stopPropagation();
-            var content = window.content[idx-1];
-            showEntry(content.date);
+            window.setTimeout(function() {
+                $('#previous').unbind();
+                $('#next').unbind();
+                showEntryByIdx(idx-1);
+            }, 250);
         });
     } else {
         $('#previous').hide();
@@ -23,11 +20,14 @@ window.showEntry = function(dateStr) {
 
     if (idx < window.content.length-1) {
         $('#next').show();
-        $('#next').click(function(evt) {
+        $('#next').bind('click', function(evt) {
             evt.preventDefault();
             evt.stopPropagation();
-            var content = window.content[idx+1];
-            showEntry(content.date);
+            window.setTimeout(function() {
+                $('#previous').unbind();
+                $('#next').unbind();
+                showEntryByIdx(idx+1);
+            }, 250);
         });
     } else {
         $('#next').hide();
@@ -36,14 +36,15 @@ window.showEntry = function(dateStr) {
     $(document).scrollTop(0);
 }
 
-// $('.entry').click(function(evt) {
-//     evt.preventDefault();
-//     evt.stopPropagation();
-//
-//     var dateStr = evt.target.id.split('entry-')[1];
-//     alert(dateStr)
-//     showEntry(dateStr);
-// });
+window.showEntryByDate = function(dateStr) {
+    if (!window.dateIndex[dateStr]) {
+        return;
+    }
+
+    var entries = window.dateIndex[dateStr];
+    var idx = entries[0];
+    showEntryByIdx(idx);
+}
 
 $(document).ready(function() {
     $(document).scrollTop(0);
