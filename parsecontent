@@ -3,6 +3,7 @@
 // possibly use grid from metro and get rid of skeleton
 // navigation
 // figure out spring break folder
+// add basic text analysis
 
 var _ = require('lodash'),
     fs = require('fs'),
