@@ -6,10 +6,11 @@ html(lang="en")
         title Letters
         style(type='text/css') !{styles}
         script !{jquery}
-        script !{metro}
+        script !{javascript}
         script.
             window.content = !{JSON.stringify(content)};
             window.dateIndex = !{JSON.stringify(dateIndex)};
+            window.topWords = !{JSON.stringify(topWords)};
     body
         .container
             nav.navigation
@@ -24,4 +25,5 @@ html(lang="en")
                 .cell
                     h5 Select a date
                     div(data-role='calendar' data-buttons='false' data-date='#{startDate}' data-min-date='#{startDate}' data-include='#{includeDates}')
-            .row
+            .row.content#wordcloud
+                h5 Word cloud

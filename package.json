@@ -20,6 +20,7 @@
         "lodash": "~2.4.1",
         "jade":"~1.9.2",
         "marked": "~0.3.3",
-        "node-minify": "~1.1.0"
+        "node-minify": "~1.1.0",
+        "stopwords": "~0.0.4"
     }
 }
