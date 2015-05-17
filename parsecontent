@@ -58,7 +58,7 @@ TextAnalysis.prototype.addWords = function(text) {
 }
 
 TextAnalysis.prototype.topWords = function(maxLength) {
-    maxLength = maxLength || 60;
+    maxLength = maxLength || 80;
 
     var tuples = [];
     for (var key in this.index) {
