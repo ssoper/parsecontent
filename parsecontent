@@ -4,6 +4,7 @@
 // navigation
 // figure out spring break folder
 // add basic text analysis
+// use headroom library for reading entries
 
 var _ = require('lodash'),
     fs = require('fs'),
